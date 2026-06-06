@@ -22,6 +22,7 @@ import os
 import random
 import re
 import secrets
+import tempfile
 import urllib.parse
 import urllib.request
 from logging.handlers import RotatingFileHandler
@@ -53,9 +54,9 @@ STATIC_DIR    = os.path.join(FRONTEND_DIR, "static")
 RECSYS_API_URL = os.environ.get("RECSYS_API_URL", "http://localhost:8000")
 
 # ── Logging Configuration ──────────────────────────────────────────────────
-LOG_DIR = os.path.join(PROJECT_ROOT, "LOGS")
-if not os.path.exists(LOG_DIR):
-    os.makedirs(LOG_DIR)
+# ── Logging Configuration ──────────────────────────────────────────────────
+LOG_DIR = os.path.join(tempfile.gettempdir(), "LOGS")
+os.makedirs(LOG_DIR, exist_ok=True)
 
 LOG_FILE = os.path.join(LOG_DIR, "session.log")
 handler = RotatingFileHandler(LOG_FILE, maxBytes=10*1024*1024, backupCount=5)
