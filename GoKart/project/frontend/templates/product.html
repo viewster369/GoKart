@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoKart — Product Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DotGothic16', sans-serif;
+            background: #f3f3f3;
+            min-height: 100vh;
+        }
+
+        nav.topnav {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 48px;
+            background: rgba(243, 243, 243, .92);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .nav-brand {
+            font-size: 18px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #111;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #111;
+            transition: .2s;
+        }
+
+        .nav-links a:hover {
+            background: #111;
+            color: #f3f3f3;
+        }
+
+        .nav-links a.dk {
+            background: #111;
+            color: #f3f3f3;
+        }
+
+        .nav-links a.dk:hover {
+            background: #333;
+        }
+
+        .nav-user {
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 10px;
+            color: #666;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-right: 8px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,0,0,0.03);
+            display: inline-flex;
+            align-items: center;
+        }
+
+        /* ── SEARCH BAR ── */
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 180px;
+            transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin-left: 12px;
+        }
+        .search-container:focus-within {
+            max-width: 280px;
+        }
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            color: #888;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            transition: transform .3s ease, color .3s ease;
+        }
+        .search-container:focus-within .search-icon {
+            transform: scale(1.15);
+            color: #111;
+        }
+        .nav-search-input {
+            width: 100%;
+            height: 38px;
+            padding: 0 16px 0 42px;
+            border-radius: 20px;
+            border: 1px solid rgba(0,0,0,0.08);
+            background: rgba(0,0,0,0.04);
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 11px;
+            letter-spacing: 1px;
+            outline: none;
+            transition: all .3s ease;
+            color: #111;
+        }
+        .nav-search-input:focus {
+            background: #fff;
+            border-color: #111;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        .nav-search-input::placeholder {
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 10px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 40px 60px 0;
+            color: #888;
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: .2s;
+        }
+
+        .back-link:hover {
+            color: #111;
+        }
+
+        .product-container {
+            padding: 20px 60px 80px;
+            display: flex;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .product-image {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            background: #d7d4d4;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            height: 500px;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 16px;
+            transition: transform 0.3s;
+        }
+
+        .product-image img:hover {
+            transform: scale(1.04);
+        }
+
+        .p-badge {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            background: #111;
+            color: #f3f3f3;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            z-index: 10;
+        }
+
+        .product-info {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 600px;
+        }
+
+        .p-cat {
+            font-size: 12px;
+            color: #888;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .p-name {
+            font-size: clamp(22px, 3vw, 36px);
+            color: #111;
+            margin-bottom: 16px;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        .p-price {
+            font-size: 28px;
+            color: #111;
+            margin-bottom: 12px;
+        }
+
+        .p-rating {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        /* ── Description Tab ── */
+        .desc-section {
+            margin-bottom: 28px;
+            border-top: 1px solid #e5e5e5;
+            padding-top: 20px;
+        }
+
+        .desc-label {
+            font-size: 9px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-bottom: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .p-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #555;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            max-height: 140px;
+            overflow: hidden;
+            position: relative;
+            transition: max-height 0.4s ease;
+        }
+
+        .p-desc.expanded {
+            max-height: 600px;
+        }
+
+        .desc-toggle {
+            background: none;
+            border: none;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #888;
+            cursor: pointer;
+            margin-top: 6px;
+            font-family: 'DotGothic16', sans-serif;
+            transition: color .2s;
+        }
+
+        .desc-toggle:hover { color: #111; }
+
+        .add-btn {
+            padding: 14px 28px;
+            background: #111;
+            color: #f3f3f3;
+            border: 2px solid #111;
+            border-radius: 30px;
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: .2s;
+            flex: 1;
+            text-align: center;
+        }
+
+        .add-btn:hover {
+            background: #333;
+            border-color: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .buy-dropdown {
+            position: relative;
+            display: inline-block;
+            flex: 1;
+        }
+
+        .buy-btn {
+            display: block;
+            width: 100%;
+            padding: 14px 28px;
+            border: 2px solid #111;
+            border-radius: 30px;
+            background: transparent;
+            color: #111;
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .buy-btn::after {
+            content: " ▼";
+            font-size: 10px;
+        }
+
+        .buy-dropdown-content {
+            display: none;
+            position: absolute;
+            bottom: 110%;
+            left: 0;
+            width: 100%;
+            background: #f3f3f3;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        .buy-dropdown:hover .buy-dropdown-content {
+            display: block;
+        }
+
+        .buy-dropdown-content div {
+            padding: 14px 18px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            color: #111;
+            cursor: pointer;
+            transition: background .2s;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .buy-dropdown-content div:last-child {
+            border-bottom: none;
+        }
+
+        .buy-dropdown-content div:hover {
+            background: #ddd;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            right: 28px;
+            background: #111;
+            color: #f3f3f3;
+            padding: 12px 22px;
+            border-radius: 16px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: .3s ease;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .error-msg {
+            padding: 60px;
+            font-size: 20px;
+            color: #d40000;
+        }
+
+        /* ── Ask-about-this button on product page ── */
+        .ask-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: transparent;
+            border: 2px solid #111;
+            border-radius: 30px;
+            color: #111;
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: .2s;
+            flex: 1;
+        }
+        .ask-btn:hover {
+            background: #111;
+            color: #f3f3f3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ═══════════════════════════════════════════════════
+           FLOATING CHATBOT — shared with dashboard
+        ═══════════════════════════════════════════════════ */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes typingDot {
+            0%, 80%, 100% { transform: scale(0.6); opacity: .4; }
+            40%            { transform: scale(1);   opacity: 1; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        #chatbotTrigger {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            z-index: 1000;
+            display: flex; align-items: center; gap: 8px;
+            padding: 13px 22px;
+            background: linear-gradient(135deg, #111 0%, #333 100%);
+            color: #f3f3f3; border: none; border-radius: 50px;
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 6px 24px rgba(0,0,0,.3);
+            transition: transform .2s, box-shadow .2s;
+        }
+        #chatbotTrigger:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,.35); }
+        #chatbotTrigger .ct-icon { font-size: 16px; }
+
+        #chatWindow {
+            position: fixed;
+            bottom: 82px; right: 20px;
+            width: 390px; height: 540px;
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.2);
+            z-index: 1001;
+            display: flex; flex-direction: column;
+            overflow: hidden; border: 1px solid #e8e8e8;
+            transform: scale(0.92) translateY(20px);
+            transform-origin: bottom right;
+            opacity: 0; pointer-events: none;
+            transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity .25s ease;
+        }
+        #chatWindow.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
+
+        .cw-header {
+            background: linear-gradient(135deg, #111 0%, #333 100%);
+            padding: 16px 20px;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .cw-header-left { display: flex; align-items: center; gap: 10px; }
+        .cw-avatar {
+            width: 34px; height: 34px;
+            background: rgba(255,255,255,.12); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 16px;
+        }
+        .cw-title { color: #fff; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+        .cw-sub { color: rgba(255,255,255,.55); font-size: 9px; letter-spacing: 1px; font-family: 'Inter', sans-serif; margin-top: 1px; }
+        .cw-close {
+            background: rgba(255,255,255,.12); border: none; border-radius: 50%;
+            width: 28px; height: 28px; color: #fff; cursor: pointer; font-size: 14px;
+            display: flex; align-items: center; justify-content: center; transition: background .2s;
+        }
+        .cw-close:hover { background: rgba(255,255,255,.25); }
+
+        #cwChips {
+            padding: 10px 14px 2px;
+            display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0;
+            border-bottom: 1px solid #f0f0f0; min-height: 0;
+        }
+        #cwChips:empty { padding: 0; border-bottom: none; }
+        .cw-chip {
+            display: flex; align-items: center; gap: 5px;
+            background: #f3f3f3; border: 1px solid #e0e0e0;
+            border-radius: 20px; padding: 4px 10px 4px 8px;
+            font-size: 9px; font-family: 'Inter', sans-serif; color: #333;
+            animation: fadeIn .2s ease;
+        }
+        .cw-chip img { width: 18px; height: 18px; object-fit: contain; border-radius: 3px; }
+        .cw-chip-remove {
+            background: none; border: none; cursor: pointer;
+            color: #aaa; font-size: 11px; padding: 0; transition: color .15s;
+        }
+        .cw-chip-remove:hover { color: #d40000; }
+        .cw-chips-label {
+            width: 100%; font-size: 8px; color: #bbb;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            font-family: 'Inter', sans-serif; padding: 0 2px 4px;
+        }
+
+        #cwMessages {
+            flex: 1; overflow-y: auto; padding: 16px;
+            display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth;
+        }
+        #cwMessages::-webkit-scrollbar { width: 4px; }
+        #cwMessages::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 2px; }
+
+        .msg { max-width: 85%; line-height: 1.55; animation: fadeIn .25s ease; }
+        .msg.user {
+            align-self: flex-end; background: #111; color: #f3f3f3;
+            padding: 10px 14px; border-radius: 18px 18px 4px 18px;
+            font-size: 12px; font-family: 'Inter', sans-serif;
+        }
+        .msg.bot {
+            align-self: flex-start; background: #f7f7f7; border: 1px solid #ececec;
+            color: #222; padding: 12px 14px; border-radius: 18px 18px 18px 4px;
+            font-size: 12px; font-family: 'Inter', sans-serif;
+        }
+        .msg.bot h1,.msg.bot h2,.msg.bot h3 { font-size: 13px; margin-bottom: 6px; font-weight: 600; color: #111; }
+        .msg.bot ul,.msg.bot ol { padding-left: 16px; margin: 4px 0; }
+        .msg.bot li { margin-bottom: 3px; }
+        .msg.bot strong { font-weight: 600; color: #111; }
+        .msg.bot p { margin-bottom: 6px; }
+        .msg.bot p:last-child { margin-bottom: 0; }
+        .msg-time { font-size: 8px; color: #bbb; margin-top: 4px; letter-spacing: .5px; font-family: 'Inter', sans-serif; }
+        .msg.user .msg-time { text-align: right; }
+
+        .typing-indicator {
+            display: flex; gap: 4px; align-items: center;
+            padding: 12px 16px; background: #f7f7f7; border: 1px solid #ececec;
+            border-radius: 18px 18px 18px 4px; align-self: flex-start; animation: fadeIn .2s ease;
+        }
+        .typing-indicator span {
+            width: 6px; height: 6px; background: #888; border-radius: 50%;
+            animation: typingDot 1.2s infinite;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: .2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: .4s; }
+
+        .cw-input-bar {
+            display: flex; align-items: center; gap: 8px;
+            padding: 12px 14px; border-top: 1px solid #f0f0f0; flex-shrink: 0;
+        }
+        #cwInput {
+            flex: 1; border: 1.5px solid #e8e8e8; border-radius: 20px;
+            padding: 9px 14px; font-family: 'Inter', sans-serif; font-size: 12px;
+            outline: none; transition: border-color .2s;
+        }
+        #cwInput:focus { border-color: #111; }
+        #cwSend {
+            width: 36px; height: 36px; background: #111; border: none; border-radius: 50%;
+            color: #fff; font-size: 14px; cursor: pointer; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            transition: background .2s, transform .15s;
+        }
+        #cwSend:hover { background: #333; transform: scale(1.08); }
+        #cwSend:disabled { background: #ccc; cursor: default; transform: none; }
+
+        .cw-welcome { text-align: center; padding: 20px 10px; }
+        .cw-welcome .cw-welcome-icon { font-size: 32px; margin-bottom: 10px; }
+        .cw-welcome h3 { font-size: 14px; color: #333; margin-bottom: 6px; letter-spacing: 1px; }
+        .cw-welcome p { font-size: 11px; font-family: 'Inter', sans-serif; line-height: 1.5; color: #999; }
+        .cw-suggestion {
+            display: inline-block; margin: 4px; padding: 6px 12px;
+            background: #f5f5f5; border: 1px solid #e8e8e8; border-radius: 20px;
+            font-size: 10px; font-family: 'Inter', sans-serif; color: #555;
+            cursor: pointer; transition: .2s; letter-spacing: .5px;
+        }
+        .cw-suggestion:hover { background: #111; color: #fff; border-color: #111; }
+    </style>
+</head>
+
+<body>
+    <nav class="topnav">
+        <div style="display: flex; align-items: center;">
+            <a href="index.html" class="nav-brand">goKart</a>
+            <div class="search-container">
+                <div class="search-icon">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <input type="text" id="searchInput" class="nav-search-input" placeholder="Search...">
+            </div>
+        </div>
+        <div class="nav-links">
+            <span class="nav-user" id="navUser"></span>
+            <a href="dashboard.html">Browse</a>
+            <a href="cart.html">Cart (<span id="cartCount">0</span>)</a>
+            <a href="#" class="dk" id="navLogout">Logout</a>
+        </div>
+    </nav>
+
+    <a href="javascript:history.back()" class="back-link">← Back</a>
+
+    <div id="productContainer">
+        <div style="padding: 60px; font-size: 14px;">Loading product details...</div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- ═══ Floating Chatbot Trigger ═══ -->
+    <button id="chatbotTrigger" onclick="toggleChat()">
+        <span class="ct-icon">✦</span>
+        Find your pick
+    </button>
+
+    <!-- ═══ Chat Window ═══ -->
+    <div id="chatWindow">
+        <div class="cw-header">
+            <div class="cw-header-left">
+                <div class="cw-avatar">✦</div>
+                <div>
+                    <div class="cw-title">Find Your Pick</div>
+                    <div class="cw-sub">AI Product Assistant • GoKart</div>
+                </div>
+            </div>
+            <button class="cw-close" onclick="toggleChat()">✕</button>
+        </div>
+        <div id="cwChips"></div>
+        <div id="cwMessages">
+            <div class="cw-welcome">
+                <div class="cw-welcome-icon">🔍</div>
+                <h3>Ask about this product</h3>
+                <p>I'll answer based on the product data only — no guessing.</p>
+                <div style="margin-top:12px">
+                    <span class="cw-suggestion" onclick="sendSuggestion(this)">Summarise this product</span>
+                    <span class="cw-suggestion" onclick="sendSuggestion(this)">Is this good value?</span>
+                    <span class="cw-suggestion" onclick="sendSuggestion(this)">Who is this best for?</span>
+                    <span class="cw-suggestion" onclick="sendSuggestion(this)">Pros and cons?</span>
+                </div>
+            </div>
+        </div>
+        <div class="cw-input-bar">
+            <input id="cwInput" type="text" placeholder="Ask about this product…" onkeydown="cwKeydown(event)" maxlength="500">
+            <button id="cwSend" onclick="sendMessage()" title="Send">➤</button>
+        </div>
+    </div>
+
+    <script>
+        // ═══ TEXT CLEANING HELPERS ═════════════════════════════════════════
+        /**
+         * Truncate a product title — stops at first sentence-ending delimiter
+         * to avoid showing the full seller description in the heading.
+         */
+        function cleanTitle(raw) {
+            if (!raw) return 'Product';
+            // Strip leading/trailing dashes and quotes
+            let t = raw.trim().replace(/^[-"'\s]+|[-"'\s]+$/g, '');
+            // If the title contains seller boilerplate, cut before it
+            const cutoffs = ['|', ' - ', ' – ', '【', '★', 'WELCOME', 'Package', 'Packing list', 'Material:'];
+            for (const c of cutoffs) {
+                const idx = t.indexOf(c);
+                if (idx > 12) { t = t.substring(0, idx).trim(); }
+            }
+            // Final cap at 90 chars
+            return t.length > 90 ? t.substring(0, 87) + '…' : t;
+        }
+
+        /**
+         * Clean raw Amazon description — remove seller boilerplate,
+         * dash-banners, and excessive whitespace.
+         */
+        function cleanDesc(raw) {
+            if (!raw || raw.trim().length < 5) return 'No description available for this product.';
+            let d = raw
+                // Remove dash-banner lines like "--- WELCOME TO OUR SHOP ---"
+                .replace(/["-]+\s*[A-Z ]+\s*["-]+/g, '')
+                // Remove lines that are all caps + dashes (seller headings)
+                .replace(/^[A-Z\s\-!★]{10,}$/gm, '')
+                // Remove "Packing list:", "Package includes:" boilerplate headers
+                .replace(/(packing list|package includes?|package content|what('s| is) in(cluded)?( in)? (the )?box)[:\s]*/gi, '')
+                // Remove repeated colons-only or dash-only lines
+                .replace(/^[-:=*•]{3,}\s*$/gm, '')
+                // Collapse multiple newlines
+                .replace(/\n{3,}/g, '\n\n')
+                .trim();
+            if (d.length < 10) return 'No description available for this product.';
+            // Escape HTML special chars
+            return d
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\n/g, '<br>');
+        }
+
+        function toggleDesc() {
+            const el = document.getElementById('descText');
+            const btn = document.getElementById('descToggle');
+            if (!el) return;
+            const expanded = el.classList.toggle('expanded');
+            btn.textContent = expanded ? 'Read less ▴' : 'Read more ▾';
+        }
+
+        // ═══ SVG PLACEHOLDER GENERATOR ════════════════════════════════════
+        const _phColors = {
+            Electronics: ['#1a1a2e','#e94560'], Fashion: ['#2d132c','#ee4c7c'],
+            Home: ['#2d4059','#ea5455'], Books: ['#3c1642','#e94560'],
+            Beauty: ['#6a097d','#f5c7f7'], Sports: ['#0f3460','#e94560'],
+        };
+        const _phIcons = {
+            Electronics:'⚡', Fashion:'👗', Home:'🏠', Books:'📚', Beauty:'✨', Sports:'🏅',
+        };
+        function generatePlaceholder(title, category) {
+            const [bg, fg] = _phColors[category] || ['#333','#fff'];
+            const icon = _phIcons[category] || '📦';
+            const label = (title || 'Product').substring(0, 30);
+            const escaped = label.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            const catLabel = (category || 'General').replace(/&/g,'&amp;');
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400"><rect width="400" height="400" fill="${bg}" rx="12"/><text x="200" y="160" text-anchor="middle" font-size="64" fill="${fg}" opacity="0.3">${icon}</text><text x="200" y="230" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="bold" fill="${fg}">${escaped}</text><text x="200" y="260" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="${fg}" opacity="0.6">${catLabel}</text></svg>`;
+            return 'data:image/svg+xml,' + encodeURIComponent(svg);
+        }
+        function handleImgError(imgEl, title, category) {
+            imgEl.onerror = null;
+            imgEl.src = generatePlaceholder(title, category);
+        }
+
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        let selectedProducts = [];   // will hold current product once loaded
+        let chatOpen = false;
+        let chatHistory = [];
+        let cwBusy = false;
+
+        function updateCartCount() {
+            document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + item.qty, 0);
+        }
+
+        function addToCartFromDetail() {
+            if (!window.currentProduct) return;
+            const product = window.currentProduct;
+            const existing = cart.find(i => i.id === product.id);
+
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+
+            const title = product.title || product.name || 'Product';
+            showToast('✓  ' + title + ' added to cart');
+        }
+
+        async function loadProduct() {
+            const productId = new URLSearchParams(window.location.search).get('id');
+            const container = document.getElementById('productContainer');
+
+            if (!productId) {
+                container.innerHTML = '<div class="error-msg">Product not found.</div>';
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/products/${encodeURIComponent(productId)}`);
+                if (!res.ok) {
+                    container.innerHTML = '<div class="error-msg">Product not found.</div>';
+                    return;
+                }
+                const product = await res.json();
+                window.currentProduct = product;
+
+                // Auto-add this product to selectedProducts for chatbot
+                selectedProducts = [{
+                    id: product.id,
+                    title: product.cleaned_title || product.title || product.name,
+                    category: product.category || product.cat || 'General',
+                    price: product.price,
+                    rating: product.rating,
+                    image: product.image || product.img || '',
+                    description: (product.short_description || product.description || product.desc || '').substring(0, 300),
+                    brand: product.brand || '',
+                    source: product.source || ''
+                }];
+                renderChips();
+
+                const title = product.cleaned_title || product.title || product.name || 'Product';
+                const cat = product.category || product.cat || 'General';
+                const img = product.image || product.img || '';
+                const desc = product.short_description || product.description || product.desc || '';
+                const price = typeof product.price === 'number' ? '$' + product.price.toFixed(2) : product.price;
+                const rating = product.rating || 0;
+                const stars = rating >= 4.5 ? '★★★★★' : rating >= 3.5 ? '★★★★☆' : rating >= 2.5 ? '★★★☆☆' : '★★☆☆☆';
+
+                let basePrice = typeof product.price === 'number' ? product.price : parseFloat(String(product.price || '').replace(/[^\d.]/g, ''));
+                if (isNaN(basePrice)) basePrice = 1000;
+
+                const seedStr = String(product.id).split('_').pop();
+                const seed = parseInt(seedStr, 36) || Math.floor(Math.random() * 100);
+                const am = (basePrice * (0.95 + ((seed * 1.3) % 0.1))).toFixed(2);
+                const fl = (basePrice * (0.95 + ((seed * 2.7) % 0.1))).toFixed(2);
+                const jm = (basePrice * (0.95 + ((seed * 3.1) % 0.1))).toFixed(2);
+                const best = Math.min(parseFloat(am), parseFloat(fl), parseFloat(jm)).toFixed(2);
+                const sym = '$';
+
+                const urlQ = encodeURIComponent(title);
+                const uA = 'https://www.amazon.in/s?k=' + urlQ;
+                const uF = 'https://www.flipkart.com/search?q=' + urlQ;
+                const uJ = 'https://www.jiomart.com/search#q=' + urlQ;
+
+                const badgeHtml = product.badge ? `<span class="p-badge">${product.badge}</span>` : '';
+
+                const storeRow = (label, storePrice, url) => `
+                    <div onclick="window.open('${url}', '_blank')" ${storePrice === best ? 'style="font-weight:bold;color:#2563eb;background:#eff6ff;"' : ''}>
+                        ${label} - ${sym}${storePrice}
+                    </div>`;
+
+                const imgSrc = img || generatePlaceholder(title, cat);
+                container.innerHTML = `
+                    <div class="product-container">
+                        <div class="product-image">
+                            ${badgeHtml}
+                            <img src="${imgSrc}" alt="${title.substring(0,60)}" loading="lazy" onerror="handleImgError(this,'${title.replace(/'/g,"\\'").replace(/"/g,'&quot;')}','${cat}')">
+                        </div>
+                        <div class="product-info">
+                            <div class="p-cat">${cat}${product.subcategory ? ' / ' + product.subcategory : ''}</div>
+                            <h1 class="p-name">${cleanTitle(title)}</h1>
+                            <div class="p-price">${price}</div>
+                            <div class="p-rating">${stars} <span style="font-family:'Inter',sans-serif;font-size:13px;">(${rating}/5)</span></div>
+                            <div class="desc-section">
+                                <div class="desc-label">Description</div>
+                                <div class="p-desc" id="descText">${cleanDesc(desc)}</div>
+                                <button class="desc-toggle" id="descToggle" onclick="toggleDesc()">Read more ▾</button>
+                            </div>
+                            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px;max-width:600px;">
+                                <button class="add-btn" onclick="addToCartFromDetail()">Add to Cart</button>
+                                <button class="ask-btn" onclick="toggleChat()">✦ Ask AI</button>
+                            </div>
+                            <div class="buy-dropdown" style="max-width:600px;">
+                                <button class="buy-btn">Buy From</button>
+                                <div class="buy-dropdown-content">
+                                    <div style="background:#eff6ff;color:#2563eb;font-weight:bold;cursor:default;font-size:11px;">BEST: ${sym}${best}</div>
+                                    ${storeRow('Amazon', am, uA)}
+                                    ${storeRow('Flipkart', fl, uF)}
+                                    ${storeRow('JioMart', jm, uJ)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } catch {
+                container.innerHTML = '<div class="error-msg">Error loading product details.</div>';
+            }
+        }
+
+        // ═══ CHATBOT ══════════════════════════════════════════════════════
+        function renderChips() {
+            const container = document.getElementById('cwChips');
+            if (selectedProducts.length === 0) { container.innerHTML = ''; return; }
+            container.innerHTML =
+                '<div class="cw-chips-label">Asking about</div>' +
+                selectedProducts.map(p =>
+                    `<div class="cw-chip">
+                        <img src="${p.image || generatePlaceholder(p.title||'Product', p.category||'General')}" alt="" onerror="this.style.display='none'">
+                        <span>${(p.title || '').substring(0, 30)}${(p.title || '').length > 30 ? '…' : ''}</span>
+                    </div>`
+                ).join('');
+        }
+
+        function toggleChat() {
+            chatOpen = !chatOpen;
+            document.getElementById('chatWindow').classList.toggle('open', chatOpen);
+            if (chatOpen) {
+                renderChips();
+                setTimeout(() => document.getElementById('cwInput').focus(), 300);
+            }
+        }
+
+        function cwKeydown(e) {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+        }
+
+        function sendSuggestion(el) {
+            document.getElementById('cwInput').value = el.textContent.trim();
+            sendMessage();
+        }
+
+        function mdToHtml(text) {
+            return text
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+                .replace(/^## (.+)$/gm,  '<h2>$1</h2>')
+                .replace(/^# (.+)$/gm,   '<h1>$1</h1>')
+                .replace(/^[\*\-] (.+)$/gm, '<li>$1</li>')
+                .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
+                .replace(/\n{2,}/g, '</p><p>')
+                .replace(/\n/g, '<br>')
+                .replace(/^(?!<[hup])(.+)$/gm, '<p>$1</p>')
+                .replace(/<p><\/p>/g, '');
+        }
+
+        function nowTime() {
+            return new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        }
+
+        function appendMsg(role, text) {
+            const msgs = document.getElementById('cwMessages');
+            const div = document.createElement('div');
+            div.className = `msg ${role}`;
+            if (role === 'bot') {
+                div.innerHTML = mdToHtml(text) + `<div class="msg-time">${nowTime()}</div>`;
+            } else {
+                div.innerHTML = `<span>${text}</span><div class="msg-time">${nowTime()}</div>`;
+            }
+            msgs.appendChild(div);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function showTyping() {
+            const msgs = document.getElementById('cwMessages');
+            const div = document.createElement('div');
+            div.className = 'typing-indicator'; div.id = 'cwTyping';
+            div.innerHTML = '<span></span><span></span><span></span>';
+            msgs.appendChild(div);
+            msgs.scrollTop = msgs.scrollHeight;
+        }
+
+        function hideTyping() {
+            const el = document.getElementById('cwTyping');
+            if (el) el.remove();
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg; t.classList.add('show');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        async function sendMessage() {
+            if (cwBusy) return;
+            const input = document.getElementById('cwInput');
+            const query = input.value.trim();
+            if (!query) return;
+
+            const msgs = document.getElementById('cwMessages');
+            const welcome = msgs.querySelector('.cw-welcome');
+            if (welcome) welcome.remove();
+
+            input.value = '';
+            appendMsg('user', query);
+            chatHistory.push({ role: 'user', text: query });
+
+            cwBusy = true;
+            document.getElementById('cwSend').disabled = true;
+            showTyping();
+
+            const payload = {
+                products: selectedProducts.map(p => ({
+                    id: p.id,
+                    title: p.title || p.name,
+                    category: p.category,
+                    price: p.price,
+                    rating: p.rating,
+                    description: (p.description || '').substring(0, 300),
+                    brand: p.brand || '',
+                    source: p.source || ''
+                })),
+                query
+            };
+
+            try {
+                const res = await fetch('/api/compare', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                hideTyping();
+                appendMsg('bot', data.answer || 'Sorry, I could not generate a response.');
+            } catch {
+                hideTyping();
+                appendMsg('bot', '⚠️ Network error. Please check the server is running.');
+            }
+
+            cwBusy = false;
+            document.getElementById('cwSend').disabled = false;
+            document.getElementById('cwInput').focus();
+        }
+
+        // ── Auth & Search Initialization ──
+        (async () => {
+            try {
+                const meRes = await fetch('/api/me');
+                if (meRes.ok) {
+                    const user = await meRes.json();
+                    document.getElementById('navUser').textContent = 'Hi, ' + user.name.split(' ')[0];
+                    document.getElementById('navLogout').addEventListener('click', async e => {
+                        e.preventDefault();
+                        await fetch('/api/logout', { method: 'POST' });
+                        window.location.href = 'login.html';
+                    });
+                } else {
+                    document.getElementById('navLogout').textContent = 'Login';
+                    document.getElementById('navLogout').href = 'login.html';
+                }
+            } catch { }
+
+            // Handle Global Search from Header
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const term = searchInput.value.trim();
+                    if (term) {
+                        window.location.href = `dashboard.html?search=${encodeURIComponent(term)}`;
+                    }
+                }
+            });
+        })();
+
+        updateCartCount();
+        loadProduct();
+    </script>
+</body>
+
+</html>

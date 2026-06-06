@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoKart — Discover What's Next</title>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        :root {
+            --bg: #f3f3f3;
+            --ink: #111;
+            --muted: #888;
+            --card: #e3e0e0;
+            --card2: #d7d4d4;
+        }
+
+        body {
+            font-family: 'DotGothic16', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── DOT GRID ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle, #bbb 1.2px, transparent 1.2px);
+            background-size: 36px 36px;
+            opacity: .35;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── TOP NAV ── */
+        .topnav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 48px;
+            background: rgba(243, 243, 243, .92);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .nav-hamburger {
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--ink);
+            letter-spacing: 1px;
+            line-height: 1;
+            margin-right: 20px;
+        }
+
+        .nav-brand {
+            font-size: 18px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--ink);
+            text-decoration: none;
+            font-family: 'DotGothic16', sans-serif;
+        }
+
+        .nav-brand span {
+            font-size: 12px;
+            vertical-align: super;
+            letter-spacing: 1px;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .nav-right a {
+            text-decoration: none;
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--ink);
+            transition: .2s ease;
+        }
+
+        .nav-right a:hover {
+            background: var(--ink);
+            color: var(--bg);
+        }
+
+        .nav-right a.dark {
+            background: var(--ink);
+            color: var(--bg);
+        }
+
+        .nav-right a.dark:hover {
+            background: #333;
+        }
+
+        .nav-user {
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 10px;
+            color: #666;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-right: 8px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,0,0,0.03);
+            display: inline-flex;
+            align-items: center;
+        }
+
+        /* ── SEARCH BAR ── */
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 180px;
+            transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .search-container:focus-within {
+            max-width: 280px;
+        }
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            color: #888;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            transition: transform .3s ease, color .3s ease;
+        }
+        .search-container:focus-within .search-icon {
+            transform: scale(1.15);
+            color: #111;
+        }
+        .nav-search-input {
+            width: 100%;
+            height: 38px;
+            padding: 0 16px 0 42px;
+            border-radius: 20px;
+            border: 1px solid rgba(0,0,0,0.08);
+            background: rgba(0,0,0,0.04);
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 11px;
+            letter-spacing: 1px;
+            outline: none;
+            transition: all .3s ease;
+            color: var(--ink);
+        }
+        .nav-search-input:focus {
+            background: #fff;
+            border-color: #111;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        .nav-search-input::placeholder {
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 10px;
+        }
+
+        /* Hamburger menu panel */
+        .menu-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px;
+            height: 100vh;
+            background: var(--ink);
+            color: var(--bg);
+            padding: 60px 36px;
+            transform: translateX(-100%);
+            transition: transform .35s ease;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .menu-panel.open {
+            transform: translateX(0)
+        }
+
+        .menu-close {
+            font-size: 22px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            align-self: flex-end
+        }
+
+        .menu-panel a {
+            color: var(--bg);
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: .75;
+            transition: opacity .2s;
+        }
+
+        .menu-panel a:hover {
+            opacity: 1
+        }
+
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .3);
+            z-index: 150;
+        }
+
+        .menu-overlay.open {
+            display: block
+        }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Left pane */
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px 56px 60px 56px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ── CLOCK ── */
+        .clock-wrap {
+            margin-bottom: 40px;
+        }
+
+        .clock-svg {
+            width: 120px;
+            height: 120px;
+        }
+
+        .clock-frame {
+            fill: none;
+            stroke: var(--ink);
+            stroke-width: 1.5;
+        }
+
+        .clock-tick {
+            stroke: var(--ink);
+            stroke-width: 1;
+            opacity: .3
+        }
+
+        .clock-tick.major {
+            stroke-width: 2;
+            opacity: .6
+        }
+
+        .hand-hour {
+            stroke: #111;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            fill: none
+        }
+
+        .hand-min {
+            stroke: #111;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            fill: none
+        }
+
+        .hand-sec {
+            stroke: #e00;
+            stroke-width: 1.2;
+            stroke-linecap: round;
+            fill: none
+        }
+
+        .clock-dot {
+            fill: var(--ink)
+        }
+
+        .hero-tag {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-size: clamp(44px, 5.5vw, 80px);
+            line-height: 1.02;
+            letter-spacing: -1px;
+            color: var(--ink);
+            margin-bottom: 20px;
+        }
+
+        .hero-body {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.9;
+            max-width: 320px;
+            margin-bottom: 36px;
+            letter-spacing: .8px;
+            font-family: 'DotGothic16', sans-serif;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        .btn-pill {
+            display: inline-block;
+            padding: 11px 28px;
+            border-radius: 24px;
+            font-family: 'DotGothic16', sans-serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: .25s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-dark {
+            background: var(--ink);
+            color: var(--bg)
+        }
+
+        .btn-dark:hover {
+            background: #333
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--ink);
+            color: var(--ink);
+        }
+
+        .btn-outline:hover {
+            background: var(--ink);
+            color: var(--bg)
+        }
+
+        /* Right pane */
+        .hero-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .product-stack {
+            position: relative;
+            width: 320px;
+            height: 480px;
+        }
+
+        /* Stacked phone/product cards like Nothing website */
+        .pcard {
+            position: absolute;
+            width: 200px;
+            min-height: 300px;
+            border-radius: 28px;
+            padding: 28px 22px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .13);
+            transition: transform .4s ease;
+        }
+
+        .pcard:hover {
+            transform: translateY(-6px) !important
+        }
+
+        .pcard.white {
+            background: #fff;
+            color: var(--ink);
+            top: 0;
+            left: 80px;
+            z-index: 3;
+            transform: rotate(2deg);
+        }
+
+        .pcard.dark {
+            background: var(--ink);
+            color: var(--bg);
+            top: 50px;
+            left: 30px;
+            z-index: 2;
+            transform: rotate(-4deg);
+        }
+
+        .pcard.rose {
+            background: #f0d9d9;
+            color: var(--ink);
+            top: 90px;
+            left: 0;
+            z-index: 1;
+            transform: rotate(-8deg);
+        }
+
+        .pcard-label {
+            font-size: 9px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: 10px
+        }
+
+        .pcard-emoji {
+            font-size: 52px;
+            margin-bottom: 14px;
+            line-height: 1;
+            font-weight: bold;
+        }
+
+        .pcard-name {
+            font-size: 14px;
+            letter-spacing: .5px;
+            margin-bottom: 6px
+        }
+
+        .pcard-price {
+            font-size: 12px;
+            opacity: .6
+        }
+
+        /* Cal widget */
+        .cal-widget {
+            position: absolute;
+            bottom: 60px;
+            right: 40px;
+            text-align: right;
+            z-index: 4;
+        }
+
+        .cal-day {
+            display: inline-block;
+            background: #d40000;
+            color: #fff;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 4px;
+        }
+
+        .cal-date {
+            font-size: 72px;
+            line-height: 1;
+            font-weight: 300;
+            color: var(--ink);
+            font-family: 'Inter', sans-serif
+        }
+
+        /* ── TICKER ── */
+        .ticker-wrap {
+            overflow: hidden;
+            background: var(--ink);
+            padding: 13px 0;
+            white-space: nowrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .ticker-track {
+            display: inline-flex;
+            animation: ticker 20s linear infinite;
+        }
+
+        .ticker-item {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--bg);
+            padding: 0 40px
+        }
+
+        .ticker-sep {
+            color: #555;
+            padding: 0 4px
+        }
+
+        @keyframes ticker {
+            0% {
+                transform: translateX(0)
+            }
+
+            100% {
+                transform: translateX(-50%)
+            }
+        }
+
+        /* ── SECTIONS ── */
+        .section {
+            padding: 80px 60px
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 40px
+        }
+
+        .section-title {
+            font-size: 28px;
+            letter-spacing: 2px;
+            color: var(--ink)
+        }
+
+        .section-sub a {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-decoration: none;
+            border-bottom: 1px solid currentColor;
+            padding-bottom: 2px;
+        }
+
+        /* Product cards */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 18px;
+        }
+
+        .product-card {
+            background: var(--card2);
+            border-radius: 20px;
+            padding: 24px 20px;
+            text-decoration: none;
+            color: var(--ink);
+            transition: transform .25s, box-shadow .25s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, .1)
+        }
+
+        .p-badge {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            padding: 2px 9px;
+            border-radius: 10px;
+            background: var(--ink);
+            color: var(--bg);
+            font-size: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .p-emoji {
+            font-size: 34px;
+            margin-bottom: 14px;
+            font-weight: bold;
+        }
+
+        .p-cat {
+            font-size: 9px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: .5;
+            margin-bottom: 6px
+        }
+
+        .p-name {
+            font-size: 15px;
+            margin-bottom: 6px;
+            letter-spacing: .3px
+        }
+
+        .p-price {
+            font-size: 12px;
+            opacity: .6
+        }
+
+        /* Category grid */
+        .cat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px
+        }
+
+        .cat-card {
+            background: var(--card2);
+            border-radius: 20px;
+            padding: 28px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--ink);
+            transition: transform .25s, box-shadow .25s;
+        }
+
+        .cat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, .08)
+        }
+
+        .cat-emoji {
+            font-size: 28px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .cat-name {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid #ddd;
+            padding: 32px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: 1px;
+        }
+
+        .footer-brand {
+            font-size: 18px;
+            letter-spacing: 5px;
+            color: var(--ink)
+        }
+
+        footer a {
+            color: var(--muted);
+            text-decoration: none
+        }
+
+        footer a:hover {
+            color: var(--ink)
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px
+        }
+
+        /* ── CURATED FOR YOU ── */
+        .curated-section {
+            background: linear-gradient(180deg, rgba(0,0,0,.025) 0%, transparent 100%);
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .curated-section .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .curated-badge {
+            display: inline-block;
+            font-size: 8px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: #2563eb;
+            color: #fff;
+            padding: 3px 10px;
+            border-radius: 10px;
+            vertical-align: middle;
+        }
+
+        .curated-card {
+            animation: curatedFadeIn .5s ease both;
+        }
+
+        @keyframes curatedFadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .curated-reason {
+            font-size: 9px;
+            color: #888;
+            margin-top: 8px;
+            letter-spacing: .8px;
+            line-height: 1.5;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Hamburger overlay -->
+    <div class="menu-overlay" id="overlay" onclick="closeMenu()"></div>
+    <div class="menu-panel" id="menuPanel">
+        <span class="menu-close" onclick="closeMenu()">✕</span>
+        <a href="index.html">Home</a>
+        <a href="dashboard.html">Products</a>
+        <a href="login.html">Login</a>
+        <a href="signup.html">Sign Up</a>
+    </div>
+
+    <nav class="topnav">
+        <div style="display: flex; align-items: center;">
+            <div class="nav-hamburger" onclick="openMenu()">≡</div>
+            <a href="index.html" class="nav-brand">goKart <span>(R)</span></a>
+            <div class="search-container" style="margin-left: 20px;">
+                <div class="search-icon">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <input type="text" id="homeSearch" class="nav-search-input" placeholder="Search...">
+            </div>
+        </div>
+        <div class="nav-right" id="navRight">
+            <span class="nav-user" id="navUser" style="display:none"></span>
+            <a href="login.html" id="loginBtn">Login</a>
+            <a href="signup.html" class="dark" id="signupBtn">Sign Up</a>
+        </div>
+    </nav>
+
+    <!-- ── HERO ── -->
+    <section class="hero">
+
+        <!-- LEFT -->
+        <div class="hero-left">
+            <!-- Analog Clock -->
+            <div class="clock-wrap">
+                <svg class="clock-svg" viewBox="0 0 120 120" id="clockSvg">
+                    <circle r="57" cx="60" cy="60" class="clock-frame" />
+                    <!-- ticks -->
+                    <g id="ticks"></g>
+                    <!-- hands -->
+                    <line id="hourHand" x1="60" y1="60" x2="60" y2="30" class="hand-hour" />
+                    <line id="minHand" x1="60" y1="60" x2="60" y2="18" class="hand-min" />
+                    <line id="secHand" x1="60" y1="68" x2="60" y2="14" class="hand-sec" />
+                    <circle r="3" cx="60" cy="60" class="clock-dot" />
+                </svg>
+            </div>
+
+            <p class="hero-tag">Product Recommendation System</p>
+            <h1 class="hero-title">Built<br>different.</h1>
+            <p class="hero-body">GoKart surfaces the perfect products for you — smart picks across electronics, fashion,
+                home essentials and more.</p>
+            <div class="hero-cta">
+                <a href="signup.html" class="btn-pill btn-dark" id="heroSignupBtn">Sign Up</a>
+                <a href="dashboard.html" class="btn-pill btn-outline">Browse</a>
+            </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="hero-right">
+            <div class="product-stack" id="heroStack">
+                <!-- Card 1 – white (front) -->
+                <div class="pcard white" id="hc1">
+                    <div class="pcard-label" id="hc1-cat">Electronics</div>
+                    <div class="pcard-emoji" id="hc1-emoji">E</div>
+                    <div class="pcard-name" id="hc1-name">Portable Speaker</div>
+                    <div class="pcard-price" id="hc1-price">$1,415</div>
+                </div>
+                <!-- Card 2 – dark -->
+                <div class="pcard dark" id="hc2">
+                    <div class="pcard-label" id="hc2-cat">Fashion</div>
+                    <div class="pcard-emoji" id="hc2-emoji">F</div>
+                    <div class="pcard-name" id="hc2-name">Slim Fit T-Shirt</div>
+                    <div class="pcard-price" id="hc2-price">$1,329</div>
+                </div>
+                <!-- Card 3 – rose -->
+                <div class="pcard rose" id="hc3">
+                    <div class="pcard-label" id="hc3-cat">Sports</div>
+                    <div class="pcard-emoji" id="hc3-emoji">S</div>
+                    <div class="pcard-name" id="hc3-name">Running Shoe</div>
+                    <div class="pcard-price" id="hc3-price">$2,059</div>
+                </div>
+            </div>
+
+            <!-- Calendar widget  -->
+            <div class="cal-widget">
+                <div class="cal-day" id="calDay">Sat</div>
+                <div class="cal-date" id="calDate">28</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── TICKER ── -->
+    <div class="ticker-wrap">
+        <div class="ticker-track">
+            <span class="ticker-item">Electronics</span><span class="ticker-sep">·</span>
+            <span class="ticker-item">Fashion</span><span class="ticker-sep">·</span>
+            <span class="ticker-item">Home &amp; Living</span><span class="ticker-sep">·</span>
+            <span class="ticker-item">Wearables</span><span class="ticker-sep">·</span>
+            <span class="ticker-item">Books</span><span class="ticker-sep">·</span>
+            <span class="ticker-item">Sports</span><span class="ticker-sep">·</span>
+            <span class="ticker-item">Beauty</span><span class="ticker-sep">·</span>
+            <span class="ticker-item">Electronics</span><span class="ticker-sep">·</span>
+            <span class="ticker-item">Fashion</span><span class="ticker-sep">·</span>
+            <span class="ticker-item">Home &amp; Living</span><span class="ticker-sep">·</span>
+            <span class="ticker-item">Wearables</span><span class="ticker-sep">·</span>
+            <span class="ticker-item">Books</span><span class="ticker-sep">·</span>
+            <span class="ticker-item">Sports</span><span class="ticker-sep">·</span>
+            <span class="ticker-item">Beauty</span><span class="ticker-sep">·</span>
+        </div>
+    </div>
+
+    <!-- ── CURATED FOR YOU (visible only when logged in) ── -->
+    <section class="section curated-section" id="curatedSection" style="display:none">
+        <div class="section-header">
+            <h2 class="section-title">Curated for You <span class="curated-badge">Personalised</span></h2>
+            <div class="section-sub"><a href="dashboard.html">View All →</a></div>
+        </div>
+        <div class="products-grid" id="curatedGrid">
+            <div style="grid-column:1/-1;text-align:center;padding:40px;font-size:11px;color:#aaa;letter-spacing:3px;text-transform:uppercase">Loading your picks…</div>
+        </div>
+    </section>
+
+    <!-- ── FEATURED PICKS ── -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">Featured Picks</h2>
+            <div class="section-sub"><a href="dashboard.html">View All →</a></div>
+        </div>
+        <div class="products-grid" id="featuredGrid">
+            <div style="grid-column:1/-1;text-align:center;padding:40px;font-size:11px;color:#aaa;letter-spacing:3px;text-transform:uppercase">Loading featured picks…</div>
+        </div>
+    </section>
+
+    <!-- ── CATEGORIES ── -->
+    <section class="section" style="padding-top:0">
+        <div class="section-header">
+            <h2 class="section-title">Shop by Category</h2>
+        </div>
+        <div class="cat-grid">
+            <a href="dashboard.html" class="cat-card">
+                <div class="cat-emoji">E</div>
+                <div class="cat-name">Electronics</div>
+            </a>
+            <a href="dashboard.html" class="cat-card">
+                <div class="cat-emoji">F</div>
+                <div class="cat-name">Fashion</div>
+            </a>
+            <a href="dashboard.html" class="cat-card">
+                <div class="cat-emoji">H</div>
+                <div class="cat-name">Home &amp; Living</div>
+            </a>
+            <a href="dashboard.html" class="cat-card">
+                <div class="cat-emoji">S</div>
+                <div class="cat-name">Sports</div>
+            </a>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ── -->
+    <footer>
+        <div class="footer-brand">goKart</div>
+        <span>© 2026 GoKart. Built different.</span>
+        <div class="footer-links">
+            <a href="login.html">Login</a>
+            <a href="signup.html">Sign Up</a>
+            <a href="dashboard.html">Browse</a>
+        </div>
+    </footer>
+
+    <script>
+        /* ── Hamburger ── */
+        function openMenu() {
+            document.getElementById('menuPanel').classList.add('open');
+            document.getElementById('overlay').classList.add('open');
+        }
+        function closeMenu() {
+            document.getElementById('menuPanel').classList.remove('open');
+            document.getElementById('overlay').classList.remove('open');
+        }
+
+        /* ── Clock ticks ── */
+        (function buildTicks() {
+            const g = document.getElementById('ticks');
+            for (let i = 0; i < 60; i++) {
+                const isMaj = i % 5 === 0;
+                const r1 = 54, r2 = isMaj ? 47 : 51;
+                const ang = i * 6 * (Math.PI / 180);
+                const x1 = 60 + r1 * Math.sin(ang), y1 = 60 - r1 * Math.cos(ang);
+                const x2 = 60 + r2 * Math.sin(ang), y2 = 60 - r2 * Math.cos(ang);
+                const ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                ln.setAttribute('x1', x1); ln.setAttribute('y1', y1);
+                ln.setAttribute('x2', x2); ln.setAttribute('y2', y2);
+                ln.setAttribute('class', 'clock-tick' + (isMaj ? ' major' : ''));
+                g.appendChild(ln);
+            }
+        })();
+
+        /* ── Clock tick ── */
+        function rotateHand(el, deg) {
+            const cx = 60, cy = 60;
+            el.setAttribute('transform', `rotate(${deg},${cx},${cy})`);
+        }
+        function tickClock() {
+            const now = new Date();
+            const h = now.getHours() % 12, m = now.getMinutes(), s = now.getSeconds();
+            rotateHand(document.getElementById('hourHand'), h * 30 + m * 0.5);
+            rotateHand(document.getElementById('minHand'), m * 6 + s * 0.1);
+            rotateHand(document.getElementById('secHand'), s * 6);
+        }
+        tickClock();
+        setInterval(tickClock, 1000);
+
+        /* ── Calendar ── */
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const now = new Date();
+        document.getElementById('calDay').textContent = days[now.getDay()];
+        document.getElementById('calDate').textContent = now.getDate();
+
+        /* ── Check if already logged in ── */
+        fetch('/api/me').then(r => {
+            if (r.ok) return r.json();
+        }).then(u => {
+            if (u && u.name) {
+                // update desktop nav
+                const navRight = document.querySelector('.nav-right');
+                if (navRight) {
+                    navRight.innerHTML = `
+                        <span style="font-size:11px;letter-spacing:2px;color:#888">Hi, ${u.name.split(' ')[0]}</span>
+                        <a href="dashboard.html" class="dark">Dashboard</a>
+                        <a href="#" id="logoutBtn">Logout</a>`;
+                    document.getElementById('logoutBtn').addEventListener('click', e => {
+                        e.preventDefault();
+                        fetch('/api/logout', { method: 'POST' }).then(() => window.location.reload());
+                    });
+                }
+                
+                // update mobile menu
+                const menuPanel = document.getElementById('menuPanel');
+                if (menuPanel) {
+                    menuPanel.innerHTML = `
+                        <span class="menu-close" onclick="closeMenu()">✕</span>
+                        <a href="index.html">Home</a>
+                        <a href="dashboard.html">Products</a>
+                        <a href="dashboard.html">Dashboard</a>
+                        <a href="#" id="mobileLogoutBtn">Logout</a>
+                    `;
+                    document.getElementById('mobileLogoutBtn').addEventListener('click', e => {
+                        e.preventDefault();
+                        fetch('/api/logout', { method: 'POST' }).then(() => window.location.reload());
+                    });
+                }
+                // update sign up button in hero
+                const heroBtn = document.getElementById('heroSignupBtn');
+                if (heroBtn) {
+                    heroBtn.textContent = 'Curated For You';
+                    heroBtn.href = '#curatedSection';
+                }
+                
+                // ── Curated for You: fetch personalised recs ──
+                fetch('/api/curated?count=10')
+                    .then(r => r.ok ? r.json() : Promise.reject())
+                    .then(data => {
+                        const recs = data.products || (Array.isArray(data) ? data : []);
+                        
+                        // Update Hero Cards (top 3)
+                        if (recs.length >= 3) {
+                            for (let i = 0; i < 3; i++) {
+                                const p = recs[i];
+                                const cat = p.category || 'General';
+                                const name = p.title || p.name || 'Product';
+                                const price = typeof p.price === 'number'
+                                    ? (p.source === 'flipkart' ? '\u20B9' : '$') + p.price.toFixed(2)
+                                    : (p.price || '');
+                                document.getElementById('hc' + (i+1) + '-cat').textContent = cat;
+                                document.getElementById('hc' + (i+1) + '-emoji').textContent = cat.charAt(0).toUpperCase();
+                                document.getElementById('hc' + (i+1) + '-name').textContent = name;
+                                document.getElementById('hc' + (i+1) + '-price').textContent = price;
+                            }
+                        }
+
+                        if (recs && recs.length > 0) {
+                            const section = document.getElementById('curatedSection');
+                            const grid = document.getElementById('curatedGrid');
+                            section.style.display = '';
+                            grid.innerHTML = recs.slice(3, 7).map((p, i) => {
+                                const cat = p.category || p.cat || 'General';
+                                const name = p.title || p.name || 'Product';
+                                const price = typeof p.price === 'number'
+                                    ? (p.source === 'flipkart' ? '\u20B9' : '$') + p.price.toFixed(2)
+                                    : (p.price || '');
+                                const reason = p.reason || '';
+                                const letter = cat.charAt(0).toUpperCase();
+                                return `
+                                <a href="dashboard.html" class="product-card curated-card" style="animation-delay:${i * 0.08}s">
+                                    <span class="p-badge" style="background:#2563eb;color:#fff">Curated</span>
+                                    <div class="p-emoji">${letter}</div>
+                                    <div class="p-cat">${cat}</div>
+                                    <div class="p-name">${name}</div>
+                                    <div class="p-price">${price}</div>
+                                    ${reason ? '<div class="curated-reason">\u2726 ' + reason + '</div>' : ''}
+                                </a>`;
+                            }).join('');
+                        }
+                    })
+                    .catch(() => { /* recsys service unavailable */ });
+            } else {
+                // If not logged in, just fetch trending for the hero cards
+                fetch('/api/curated?count=3')
+                    .then(r => r.ok ? r.json() : Promise.reject())
+                    .then(data => {
+                        const recs = data.products || [];
+                        if (recs.length >= 3) {
+                            for (let i = 0; i < 3; i++) {
+                                const p = recs[i];
+                                const cat = p.category || 'General';
+                                const name = p.title || p.name || 'Product';
+                                const price = typeof p.price === 'number'
+                                    ? (p.source === 'flipkart' ? '\u20B9' : '$') + p.price.toFixed(2)
+                                    : (p.price || '');
+                                document.getElementById('hc' + (i+1) + '-cat').textContent = cat;
+                                document.getElementById('hc' + (i+1) + '-emoji').textContent = cat.charAt(0).toUpperCase();
+                                document.getElementById('hc' + (i+1) + '-name').textContent = name;
+                                document.getElementById('hc' + (i+1) + '-price').textContent = price;
+                            }
+                        }
+                    }).catch(()=> {});
+            }
+        }).then(() => {
+            // After auth check, update the nav if logged in
+            fetch('/api/me').then(r => r.ok ? r.json() : Promise.reject()).then(user => {
+                document.getElementById('navUser').textContent = 'Hi, ' + user.name.split(' ')[0];
+                document.getElementById('navUser').style.display = 'inline-flex';
+                const loginBtn = document.getElementById('loginBtn');
+                const signupBtn = document.getElementById('signupBtn');
+                if (loginBtn) {
+                    loginBtn.textContent = 'Dashboard';
+                    loginBtn.href = 'dashboard.html';
+                }
+                if (signupBtn) {
+                    signupBtn.textContent = 'Logout';
+                    signupBtn.href = '#';
+                    signupBtn.classList.remove('dark');
+                    signupBtn.style.border = '1px solid #111';
+                    signupBtn.addEventListener('click', async (e) => {
+                        e.preventDefault();
+                        await fetch('/api/logout', { method: 'POST' });
+                        window.location.reload();
+                    });
+                }
+            }).catch(() => {});
+        }).catch(() => { });
+
+        /* ── Hero Currency Fix ── */
+        const standardCurrency = (p) => {
+            return typeof p.price === 'number' ? '$' + p.price.toFixed(2) : (p.price || '');
+        };
+
+        /* ── Fetch Featured Picks ── */
+        fetch('/api/products?limit=4')
+            .then(r => r.ok ? r.json() : Promise.reject())
+            .then(data => {
+                const recs = data.products || [];
+                if (recs.length > 0) {
+                    const grid = document.getElementById('featuredGrid');
+                    grid.innerHTML = recs.map((p, i) => {
+                        const cat = p.category || p.cat || 'General';
+                        const name = p.title || p.name || 'Product';
+                        const price = standardCurrency(p);
+                        const letter = cat.charAt(0).toUpperCase();
+                        let badgeHtml = '';
+                        if (i === 0) badgeHtml = '<span class="p-badge">New</span>';
+                        if (i === 2) badgeHtml = '<span class="p-badge">Trending</span>';
+                        return `
+                        <a href="dashboard.html?search=${encodeURIComponent(name)}" class="product-card">
+                            ${badgeHtml}
+                            <div class="p-emoji">${letter}</div>
+                            <div class="p-cat">${cat}</div>
+                            <div class="p-name">${name}</div>
+                            <div class="p-price">${price}</div>
+                        </a>`;
+                    }).join('');
+                }
+            })
+            .catch(() => {});
+
+        /* ── Home Search ── */
+        const homeSearch = document.getElementById('homeSearch');
+        if (homeSearch) {
+            homeSearch.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    const val = this.value.trim();
+                    if (val) {
+                        window.location.href = 'dashboard.html?search=' + encodeURIComponent(val);
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

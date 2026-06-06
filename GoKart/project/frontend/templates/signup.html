@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoKart — Create Account</title>
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'DotGothic16', sans-serif;
+            background: #f3f3f3;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle, #bbb 1.2px, transparent 1.2px);
+            background-size: 36px 36px;
+            opacity: .35;
+            pointer-events: none;
+        }
+
+        .brand {
+            position: fixed;
+            top: 26px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #111;
+            z-index: 10;
+        }
+
+        .back {
+            position: fixed;
+            top: 30px;
+            left: 36px;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #888;
+            text-decoration: none;
+            z-index: 10;
+            transition: color .2s;
+        }
+
+        .back:hover {
+            color: #111
+        }
+
+        .card {
+            background: #d7d4d4;
+            padding: 50px 44px;
+            width: 380px;
+            border-radius: 22px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, .08);
+            position: relative;
+            z-index: 2;
+        }
+
+        .card h2 {
+            font-size: 24px;
+            letter-spacing: 1px;
+            margin-bottom: 6px
+        }
+
+        .card .sub {
+            font-size: 11px;
+            color: #888;
+            letter-spacing: 1px;
+            margin-bottom: 32px
+        }
+
+        .field {
+            margin-bottom: 18px
+        }
+
+        .field label {
+            display: block;
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 7px;
+            color: #444
+        }
+
+        .field input {
+            width: 100%;
+            padding: 11px 14px;
+            border: none;
+            border-radius: 12px;
+            background: #f8f8f8;
+            font-size: 13px;
+            outline: none;
+            font-family: 'DotGothic16', sans-serif;
+            transition: box-shadow .25s;
+        }
+
+        .field input:focus {
+            box-shadow: 0 0 0 2px #111
+        }
+
+        .field input::placeholder {
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #bbb
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 20px;
+            background: #111;
+            color: #f3f3f3;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 6px;
+            font-family: 'DotGothic16', sans-serif;
+            transition: background .2s;
+        }
+
+        button:hover {
+            background: #333
+        }
+
+        .msg {
+            display: none;
+            margin-top: 14px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .msg.err {
+            background: #ffe0e0;
+            color: #c00
+        }
+
+        .msg.ok {
+            background: #e0ffe4;
+            color: #080
+        }
+
+        .foot {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 11px;
+            color: #777;
+            letter-spacing: .5px
+        }
+
+        .foot a {
+            color: #111;
+            text-decoration: none;
+            letter-spacing: 1px
+        }
+
+        .foot a:hover {
+            text-decoration: underline
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="back">← Home</a>
+    <div class="brand">goKart <span style="font-size:10px;vertical-align:super">(R)</span></div>
+
+    <div class="card">
+        <h2>Sign Up</h2>
+        <p class="sub">Create your account</p>
+        <form id="signupForm" onsubmit="handleSignup(event)">
+            <div class="field">
+                <label>Name</label>
+                <input type="text" id="name" placeholder="Your name" required>
+            </div>
+            <div class="field">
+                <label>Email</label>
+                <input type="email" id="email" placeholder="your@email.com" required>
+            </div>
+            <div class="field">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Min 6 characters" required minlength="6">
+            </div>
+            <button type="submit">Create Account</button>
+            <div class="msg" id="msg"></div>
+            <div class="foot">Already have an account? <a href="login.html">Login</a></div>
+        </form>
+    </div>
+
+    <script>
+        async function handleSignup(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const msg = document.getElementById('msg');
+            const btn = document.querySelector('button');
+            btn.textContent = 'Creating…'; btn.disabled = true;
+            try {
+                const res = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    msg.className = 'msg ok'; msg.textContent = 'Account created! Redirecting…'; msg.style.display = 'block';
+                    setTimeout(() => window.location.href = 'dashboard.html', 900);
+                } else {
+                    msg.className = 'msg err'; msg.textContent = data.error || 'Registration failed.'; msg.style.display = 'block';
+                    btn.textContent = 'Create Account'; btn.disabled = false;
+                }
+            } catch {
+                msg.className = 'msg err'; msg.textContent = 'Server unreachable.'; msg.style.display = 'block';
+                btn.textContent = 'Create Account'; btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>
